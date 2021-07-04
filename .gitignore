@@ -12,3 +12,5 @@ test/exampleWrite
 test/testRemoteManyContigs
 test/testBigBed
 test/testIterator
+.idea
+cmake-builds/
