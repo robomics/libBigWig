@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bigWig.h"
+#include "libBigWig/bigWig.h"
 
 // Print overly verbose header information
 void bwPrintHdr(bigWigFile_t *bw) {

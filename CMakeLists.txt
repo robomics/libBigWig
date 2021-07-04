@@ -69,16 +69,19 @@ target_link_libraries(
          m) # -lm
 # cmake-format: on
 
-if (NOT WITH_CURL)
-target_compile_definitions(libBigWig PUBLIC -DNOCURL)
+if(NOT WITH_CURL)
+  target_compile_definitions(libBigWig PUBLIC -DNOCURL)
 endif()
 
 target_compile_features(libBigWig PRIVATE c_std_99)
 set_target_properties(libBigWig PROPERTIES OUTPUT_NAME BigWig)
+
+add_subdirectory(test)
 
 install(
   TARGETS libBigWig
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
-  INCLUDES DESTINATION include)
+  INCLUDES
+  DESTINATION include)

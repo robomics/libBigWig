@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bigWig.h"
+#include "libBigWig/bigWig.h"
 
 int main(int argc, char *argv[]) {
   bigWigFile_t *fp = NULL;

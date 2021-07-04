@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bigWig.h"
+#include "libBigWig/bigWig.h"
 
 void bwPrintHdr(bigWigFile_t *bb) {
   uint64_t i;

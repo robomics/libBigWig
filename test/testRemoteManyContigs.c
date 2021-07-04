@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bigWig.h"
+#include "libBigWig/bigWig.h"
 
 // This is an example call back function
 CURLcode callBack(CURL *curl) {
