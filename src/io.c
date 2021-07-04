@@ -6,7 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _MSC_VER
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 
 #include "libBigWig/bigWigIO.h"
 
@@ -49,7 +53,7 @@ CURLcode urlFetchData(URL_t *URL, unsigned long bufSize) {
 // The loop is likely no longer needed.
 size_t url_fread(void *obuf, size_t obufSize, URL_t *URL) {
   size_t remaining = obufSize, fetchSize;
-  void *p = obuf;
+  uint8_t *p = obuf;
   CURLcode rv;
 
   while (remaining) {
@@ -62,7 +66,7 @@ size_t url_fread(void *obuf, size_t obufSize, URL_t *URL) {
     } else if (URL->bufLen <
                URL->bufPos +
                    remaining) {  // Copy the remaining buffer and reload the buffer as needed
-      p = memcpy(p, URL->memBuf + URL->bufPos, URL->bufLen - URL->bufPos);
+      p = (uint8_t *)memcpy(p, (uint8_t *)URL->memBuf + URL->bufPos, URL->bufLen - URL->bufPos);
       if (!p) return 0;
       p += URL->bufLen - URL->bufPos;
       remaining -= URL->bufLen - URL->bufPos;
@@ -79,7 +83,7 @@ size_t url_fread(void *obuf, size_t obufSize, URL_t *URL) {
         }
       }
     } else {
-      p = memcpy(p, URL->memBuf + URL->bufPos, remaining);
+      p = (uint8_t *)memcpy(p, (uint8_t *)URL->memBuf + URL->bufPos, remaining);
       if (!p) return 0;
       URL->bufPos += remaining;
       remaining = 0;
@@ -105,7 +109,7 @@ size_t urlRead(URL_t *URL, void *buf, size_t bufSize) {
 
 size_t bwFillBuffer(void *inBuf, size_t l, size_t nmemb, void *pURL) {
   URL_t *URL = (URL_t *)pURL;
-  void *p = URL->memBuf;
+  uint8_t *p = URL->memBuf;
   size_t copied = l * nmemb;
   if (!p) return 0;
 

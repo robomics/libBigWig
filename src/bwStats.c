@@ -66,7 +66,7 @@ double getScalar(uint32_t i_start, uint32_t i_end, uint32_t b_start, uint32_t b_
 // Returns NULL on error
 static struct vals_t *getVals(bigWigFile_t *fp, bwOverlapBlock_t *o, int i, uint32_t tid,
                               uint32_t start, uint32_t end) {
-  void *buf = NULL, *compBuf = NULL;
+  uint8_t *buf = NULL, *compBuf = NULL;
   uLongf sz = fp->hdr->bufSize;
   int compressed = 0, rv;
   uint32_t *p, vtid, vstart, vend;
@@ -100,8 +100,8 @@ static struct vals_t *getVals(bigWigFile_t *fp, bwOverlapBlock_t *o, int i, uint
     sz = o->size[i];
   }
 
-  p = buf;
-  while (((uLongf)((void *)p - buf)) < sz) {
+  p = (uint32_t*)buf;
+  while (((uLongf)((uint8_t *)p - buf)) < sz) {
     vtid = p[0];
     vstart = p[1];
     vend = p[2];

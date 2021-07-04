@@ -502,7 +502,7 @@ bbOverlappingEntries_t *bbGetOverlappingEntriesCore(bigWigFile_t *fp, bwOverlapB
   uint64_t i;
   int compressed = 0, rv, slen;
   uLongf sz = fp->hdr->bufSize, tmp = 0;
-  void *buf = NULL, *bufEnd = NULL, *compBuf = NULL;
+  uint8_t *buf = NULL, *bufEnd = NULL, *compBuf = NULL;
   uint32_t entryTid = 0, start = 0, end;
   char *str;
   bbOverlappingEntries_t *output = calloc(1, sizeof(bbOverlappingEntries_t));
