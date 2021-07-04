@@ -10,24 +10,24 @@ include(cmake/StandardProjectSettings.cmake)
 include(cmake/PreventInSourceBuilds.cmake)
 
 # Link this 'library' to set the c++ standard / compile-time options requested
-add_library(project_options INTERFACE)
+add_library(libbigwig_project_options INTERFACE)
 # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
-add_library(project_warnings INTERFACE)
+add_library(libbigwig_project_warnings INTERFACE)
 
 if(CMAKE_C_COMPILER_ID MATCHES ".*Clang")
   option(ENABLE_BUILD_WITH_TIME_TRACE "Enable -ftime-trace to generate time tracing .json files on clang" OFF)
   if(ENABLE_BUILD_WITH_TIME_TRACE)
-    add_compile_definitions(project_options INTERFACE -ftime-trace)
+    add_compile_definitions(libbigwig_project_options INTERFACE -ftime-trace)
   endif()
 endif()
 
 # standard compiler warnings
 include(cmake/CompilerWarnings.cmake)
-set_project_warnings(project_warnings)
+set_project_warnings(libbigwig_project_warnings)
 
 # sanitizer options if supported by compiler
 include(cmake/Sanitizers.cmake)
-enable_sanitizers(project_options)
+enable_sanitizers(libbigwig_project_options)
 
 # enable doxygen
 include(cmake/Doxygen.cmake)
@@ -62,7 +62,7 @@ target_include_directories(libBigWig PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # cmake-format: off
 target_link_libraries(
   libBigWig
-  PRIVATE project_options
+  PRIVATE libbigwig_project_options
   PUBLIC $<$<AND:$<BOOL:${USE_CONAN}>,$<BOOL:${WITH_CURL}>>:CONAN_PKG::libcurl>
          $<$<AND:$<NOT:$<BOOL:${USE_CONAN}>>,$<BOOL:${WITH_CURL}>>:CURL::libcurl>
          $<IF:$<BOOL:${USE_CONAN}>,CONAN_PKG::zlib,ZLIB::ZLIB>
