@@ -17,8 +17,8 @@ class libBigWig(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     requires = ["zlib/1.2.11"]
 
-    generators = "cmake"
+    generators = "cmake", "gcc", "txt", "cmake_find_package"
 
     def requirements(self):
         if bool(self.options.with_curl):
-            self.requires("libcurl/7.77.0")
+            self.requires("libcurl/7.78.0")

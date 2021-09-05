@@ -1,4 +1,6 @@
-find_package(CURL REQUIRED)
+if(WITH_CURL)
+  find_package(CURL REQUIRED)
+endif()
 find_package(ZLIB REQUIRED)
 
 add_library(libBigWig)

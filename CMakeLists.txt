@@ -22,6 +22,21 @@ if(CMAKE_C_COMPILER_ID MATCHES ".*Clang")
   endif()
 endif()
 
+# Add linker configuration
+include(cmake/Linker.cmake)
+configure_linker(project_options)
+
+message(STATUS "CPU arch detected by CMake: ${CMAKE_SYSTEM_PROCESSOR}")
+if(ENABLE_PSO
+        AND ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64"
+        OR "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL AMD64))
+  if(MSVC)
+    target_compile_options(libbigwig_project_options INTERFACE /arch:native)
+  else()
+    target_compile_options(libbigwig_project_options INTERFACE -march=native)
+  endif()
+endif()
+
 # standard compiler warnings
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(libbigwig_project_warnings)
@@ -31,20 +46,18 @@ include(cmake/Sanitizers.cmake)
 enable_sanitizers(libbigwig_project_options)
 
 # enable doxygen
-include(cmake/Doxygen.cmake)
-enable_doxygen()
+if(BUILD_DOCS)
+  include(cmake/Doxygen.cmake)
+  enable_doxygen()
+endif()
 
 # allow for static analysis options
 include(cmake/StaticAnalyzers.cmake)
 
-if(USE_CONAN)
+option(ENABLE_CONAN "Use Conan for dependency management" ON)
+if(ENABLE_CONAN)
   include(cmake/Conan.cmake)
   run_conan()
-else()
-  find_package(ZLIB REQUIRED)
-  if(WITH_CURL)
-    find_package(CURL REQUIRED)
-  endif()
 endif()
 
 add_subdirectory(src)
