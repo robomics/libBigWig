@@ -11,6 +11,7 @@ include(cmake/PreventInSourceBuilds.cmake)
 
 # Link this 'library' to set the c++ standard / compile-time options requested
 add_library(libbigwig_project_options INTERFACE)
+
 # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
 add_library(libbigwig_project_warnings INTERFACE)
 
@@ -46,42 +47,8 @@ else()
   endif()
 endif()
 
-add_library(libBigWig)
-add_library(libBigWig::libbigwig ALIAS libBigWig)
+add_subdirectory(src)
 
-target_sources(
-  libBigWig
-  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/bwRead.c
-          ${CMAKE_CURRENT_SOURCE_DIR}/src/bwStats.c
-          ${CMAKE_CURRENT_SOURCE_DIR}/src/bwValues.c
-          ${CMAKE_CURRENT_SOURCE_DIR}/src/bwWrite.c
-          ${CMAKE_CURRENT_SOURCE_DIR}/src/io.c)
-
-target_include_directories(libBigWig PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# cmake-format: off
-target_link_libraries(
-  libBigWig
-  PRIVATE libbigwig_project_options
-  PUBLIC $<$<AND:$<BOOL:${USE_CONAN}>,$<BOOL:${WITH_CURL}>>:CONAN_PKG::libcurl>
-         $<$<AND:$<NOT:$<BOOL:${USE_CONAN}>>,$<BOOL:${WITH_CURL}>>:CURL::libcurl>
-         $<IF:$<BOOL:${USE_CONAN}>,CONAN_PKG::zlib,ZLIB::ZLIB>
-         m) # -lm
-# cmake-format: on
-
-if(NOT WITH_CURL)
-  target_compile_definitions(libBigWig PUBLIC -DNOCURL)
+if (ENABLE_TESTING)
+  add_subdirectory(test)
 endif()
-
-target_compile_features(libBigWig PRIVATE c_std_99)
-set_target_properties(libBigWig PROPERTIES OUTPUT_NAME BigWig)
-
-add_subdirectory(test)
-
-install(
-  TARGETS libBigWig
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  RUNTIME DESTINATION bin
-  INCLUDES
-  DESTINATION include)
