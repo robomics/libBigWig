@@ -58,9 +58,6 @@ macro(run_conan)
       ${CMAKE_CURRENT_SOURCE_DIR}
       OPTIONS
       with_curl=${WITH_CURL}
-      ENV
-      "CC=${CMAKE_C_COMPILER}"
-      "CXX=${CMAKE_CXX_COMPILER}"
       BUILD
       outdated)
   endforeach()
