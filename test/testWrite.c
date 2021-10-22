@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (bwCreateHdr(ofp, 10)) goto error;  // ten zoom levels
-  ofp->cl = bwCreateChromList(ifp->cl->chrom, ifp->cl->len, ifp->cl->nKeys);
+  ofp->cl = bwCreateChromList((const char **)ifp->cl->chrom, ifp->cl->len, ifp->cl->nKeys);
   if (!ofp->cl) goto error;
 
   if (bwWriteHdr(ofp)) goto error;

@@ -20,7 +20,7 @@ struct val_t {
 
 // Create a chromList_t and attach it to a bigWigFile_t *. Returns NULL on error
 // Note that chroms and lengths are duplicated, so you MUST free the input
-chromList_t *bwCreateChromList(char **chroms, uint32_t *lengths, int64_t n) {
+chromList_t *bwCreateChromList(const char **chroms, const uint32_t *lengths, int64_t n) {
   int64_t i = 0;
   chromList_t *cl = calloc(1, sizeof(chromList_t));
   if (!cl) return NULL;

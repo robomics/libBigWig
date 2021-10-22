@@ -576,7 +576,7 @@ int bwCreateHdr(bigWigFile_t *fp, int32_t maxZooms);
  * @param n The number of chromosomes (thus, the length of `chroms` and `lengths`)
  * @return A pointer to a chromList_t or NULL on error.
  */
-chromList_t *bwCreateChromList(char **chroms, uint32_t *lengths, int64_t n);
+chromList_t *bwCreateChromList(const char **chroms, const uint32_t *lengths, int64_t n);
 
 /*!
  * @brief Write a the header to a bigWig file.
