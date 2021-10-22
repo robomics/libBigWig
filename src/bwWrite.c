@@ -198,7 +198,9 @@ int bwWriteHdr(bigWigFile_t *bw) {
   uint32_t magic = BIGWIG_MAGIC;
   uint16_t two = 4;
   FILE *fp;
-  void *p = calloc(58, sizeof(uint8_t));  // 58 bytes of nothing
+  // void *p = calloc(58, sizeof(uint8_t));  // 58 bytes of nothing
+  uint8_t pbuff[58] = {0};
+  void *p = (void *)&pbuff;
   if (!bw->isWrite) return 1;
 
   // The header itself, largely just reserving space...
@@ -233,7 +235,6 @@ int bwWriteHdr(bigWigFile_t *bw) {
   // Save space for the number of blocks
   if (fwrite(p, sizeof(uint8_t), 8, fp) != 8) return 13;
 
-  free(p);
   return 0;
 }
 
